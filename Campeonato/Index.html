@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html ng-app="appModulo">
+    <head  ng-controller="appController">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Bem vindo ao {{tituloAplicacao}}</title>
+
+        <link rel="stylesheet" href="./lib/bootstrap/bootstrap.css">
+        <link rel="stylesheet" href="./css/site.css">
+
+        <script src="./lib/angular/angular.min.js"></script>
+        <script src="./lib/angular/angular-locale_pt-br.js"></script>
+
+        <script src="./js/app.js"></script>
+
+    </head>
+    <body ng-controller="appController">
+        <div class="container">
+            <div class="jumbotron">
+
+                <div class="row">
+                    <div class="col">
+                        <h3>{{ tituloAplicacao }}</h3>
+                    </div>
+                </div>
+
+                <hr>
+                
+                <div class="row">
+                    <div class="col col-sm-4">
+                        <h5>Data Cotação: {{ dataCotacao | date: "dd/MM/yyyy" }}</h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col col-sm-6">
+                        <h5 class="valor">Valor Cotacao: {{ valorCotacao | number }} ou {{ valorCotacao | currency: "R$ " }}</h5>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="row form-group">
+                    <div class="col col-sm-3">
+                        <label for="">Ordenar Por</label>
+                        <select ng-model="campoOrdenacao" class="form-control">
+                            <option value="Nome">Nome</option>
+                            <option value="-Nome">Nome DESC</option>
+                            <option value="Pontos">Pontos</option>
+                            <option value="-Pontos">Pontos DESC</option>
+                            <option value="Bandeira">Bandeira</option>
+                            <option value="-Bandeira">Bandeira DESC</option>
+                        </select>
+                    </div>
+                    <div class="col col-sm-2">
+                        <label for="">Limite de linhas</label>
+                        <input type="number" min="0" max="15" step="1" ng-model="numeroLinhas" class="form-control" >
+                    </div>
+                    <div class="col col-sm-2">
+                        <label for="">Tipo Filtro</label>
+                        <select ng-model="tipoFiltro" class="form-control">
+                            <option value="Nome">Nome</option>
+                            <option value="Pontos">Pontos</option>
+                            <option value="Bandeira">Bandeira</option>
+                        </select>
+                    </div>
+                    <div class="col col-sm-3">
+                        <label for="">Filtro </label>
+                        <input type="text" ng-model="textoFiltro" class="form-control" >
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="row">
+                    <div class="col col-sm-4">
+                        <a href="#" ng-click="ordenar('Nome')"><h5>Nome</h5></a>
+                    </div>
+                    <div class="col col-sm-2">
+                        <a href="#" ng-click="ordenar('Pontos')"><h5>Pontos</h5></a>
+                    </div>
+                    <div class="col col-sm-4">
+                        <a href="#" ng-click="ordenar('Bandeira')"><h5>Bandeira</h5></a>
+                    </div>
+                </div>
+
+                <!-- LISTA OS ITENS -->
+                <div class="row" ng-repeat="time in times | filter: { Nome: textoFiltro } | limitTo: numeroLinhas | orderBy: campoOrdenacao">
+                    <div class="col col-sm-4">
+                        <h5>{{time.Nome}}</h5>
+                    </div>
+                    <div class="col col-sm-2">
+                        <h5>{{time.Pontos}}</h5>
+                    </div>
+                    <div class="col col-sm-4 ">
+                        <h5>{{time.Bandeira}}</h5>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="row">
+                    <div class="col">
+                        <h5><u>Informe os dados do time para incluir</u></h5>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group col-sm-4">
+                        <label for="">Nome</label>
+                        <input type="text" class="form-control" ng-model="time.Nome" placeholder="informe o nome" >
+                    </div>  
+                    <div class="form-group col-sm-2">
+                            <label for="">Pontos</label>
+                            <input type="text" class="form-control" ng-model="time.Pontos" placeholder="informe os pontos">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-sm-6">
+                        <label for="">Bandeira</label>
+                        <input type="text" class="form-control" ng-model="time.Bandeira" placeholder="informe a bandeira">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col text-rigth">
+                        <button class="btn btn-primary" ng-click="incluirTime(time)">Incluir</button>
+                    </div>
+                </div>
+                <hr>
+            </div>
+            {{tipoFiltro}}
+        </div>
+
+    </body>
+</html>
